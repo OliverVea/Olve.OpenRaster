@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Olve.OpenRaster", "Olve.OpenRaster\Olve.OpenRaster.csproj", "{83AF7185-3FBE-4526-BDA8-F3D567567590}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Olve.OpenRaster.Test", "Olve.OpenRaster.Test\Olve.OpenRaster.Test.csproj", "{92E6D3D9-962F-46C7-9F4F-1F8529B1537D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83AF7185-3FBE-4526-BDA8-F3D567567590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83AF7185-3FBE-4526-BDA8-F3D567567590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83AF7185-3FBE-4526-BDA8-F3D567567590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83AF7185-3FBE-4526-BDA8-F3D567567590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92E6D3D9-962F-46C7-9F4F-1F8529B1537D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92E6D3D9-962F-46C7-9F4F-1F8529B1537D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92E6D3D9-962F-46C7-9F4F-1F8529B1537D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92E6D3D9-962F-46C7-9F4F-1F8529B1537D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
