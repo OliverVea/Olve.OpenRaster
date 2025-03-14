@@ -132,9 +132,3 @@ internal static class XmlElementParser
         };
     }
 }
-
-public enum Visibility
-{
-    Hidden = 0,
-    Visible = 1,
-}

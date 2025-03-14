@@ -59,8 +59,10 @@ internal static class GroupReader
             CompositeOperation = compositeOperation,
             Opacity = opacity,
             Visibility = visibility,
+#pragma warning disable CS0618 // Type or member is obsolete
             X = x,
             Y = y,
+#pragma warning restore CS0618 // Type or member is obsolete
             Layers = layers[layerIndex..]
         };
 

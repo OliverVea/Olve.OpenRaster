@@ -5,12 +5,25 @@ using Olve.Utilities.Types.Results;
 
 namespace Olve.OpenRaster;
 
+/// <summary>
+/// Reads an open raster file.
+/// </summary>
 public class ReadOpenRasterFile : IOperation<ReadOpenRasterFile.Request, ReadOpenRasterFile.Response>
 {
+    /// <summary>
+    /// Represents the request to read an open raster file.
+    /// </summary>
+    /// <param name="Path">The path to the open raster file.</param>
     public record Request(string Path);
 
-    public record Response(Request Request, string MimeType, StackFileContent StackFile);
+    /// <summary>
+    /// Represents the response to reading an open raster file.
+    /// </summary>
+    /// <param name="MimeType">The mimetype of the open raster file.</param>
+    /// <param name="StackFile">The stack file read from the open raster file.</param>
+    public record Response(string MimeType, StackFileContent StackFile);
 
+    /// <inheritdoc />
     public Result<Response> Execute(Request request)
     {
         var path = Path.GetFullPath(request.Path);
@@ -33,6 +46,6 @@ public class ReadOpenRasterFile : IOperation<ReadOpenRasterFile.Request, ReadOpe
             return problems;
         }
 
-        return new Response(request, mimeType, stack);
+        return new Response(mimeType, stack);
     }
 }

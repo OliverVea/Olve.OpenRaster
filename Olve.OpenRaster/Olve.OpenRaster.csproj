@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Title>Olve.OpenRaster</Title>
         <Authors>Oliver Vea</Authors>
         <Description>lightweight native support for OpenRaster files</Description>

@@ -27,7 +27,6 @@ public class Tests
 
         Assert.Multiple(() =>
         {
-            Assert.That(response.Request.Path, Is.EqualTo(request.Path));
             Assert.That(response.MimeType, Is.EqualTo("image/openraster"));
             Assert.That(response.StackFile.Version, Is.EqualTo("0.0.0"));
             Assert.That(response.StackFile.Layers, Has.Count.EqualTo(4));
