@@ -47,7 +47,7 @@ public class PngFileReader : IImageFileReader<Png>
 
 I want to expand this in the future with:
 
-1. Reading all content. Currently the following is not supported:
+1. Reading all content. Currently, the following is not supported:
     - Thumbnail images
     - Merged image
 1. Writing operations to both stack and all images.
