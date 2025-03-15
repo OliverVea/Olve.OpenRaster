@@ -12,29 +12,30 @@ namespace Olve.OpenRaster;
 public class ReadLayerAs<T> : IOperation<ReadLayerAs<T>.Request, T>
 {
     /// <summary>
-    ///     Request to load and parse a layer from an open raster file.
+    ///     Request to load and parse a layer from an OpenRaster (.ora) file.
     /// </summary>
-    /// <param name="Path">The path to the open raster file.</param>
-    /// <param name="ImageSource">The source of the layer image to get.</param>
-    /// <param name="LayerParser">The parsed used to parse the image data into the output type.</param>
-    public record Request(string Path, string ImageSource, ILayerParser<T> LayerParser);
+    /// <param name="FilePath">The absolute or relative path to the OpenRaster (.ora) file.</param>
+    /// <param name="LayerSource">The identifier of the layer image to retrieve.</param>
+    /// <param name="LayerParser">The parser responsible for converting the image data into the output type.</param>
+    public record Request(string FilePath, string LayerSource, ILayerParser<T> LayerParser);
 
     /// <inheritdoc />
     public Result<T> Execute(Request request)
     {
-        var path = Path.GetFullPath(request.Path);
-        if (!File.Exists(path))
+        if (FilePathValidator.ValidateFilePath(request.FilePath).TryPickProblems(out var problems))
         {
-            return new ResultProblem("no file was found with path '{0}'", path);
+            return problems.Prepend(new ResultProblem("File path '{0}' failed validation.", request.FilePath));
         }
 
-        using var zipArchive = ZipFile.OpenRead(request.Path);
+        using var zipArchive = ZipFile.OpenRead(request.FilePath);
 
-        if (LayerImageReader.ReadImageFile(zipArchive, request.ImageSource, request.LayerParser)
-                .TryPickProblems(out var problems, out var data))
+        if (LayerImageReader.ReadImageFile(zipArchive, request.LayerSource, request.LayerParser)
+                .TryPickProblems(out problems, out var data))
         {
-            problems.Prepend(new ResultProblem("could not read layer '{0}' from open raster file '{1}'", request.ImageSource, request.Path));
-            return problems;
+            return problems.Prepend(new ResultProblem(
+                "Could not read layer '{0}' from OpenRaster file '{1}'.",
+                request.LayerSource,
+                request.FilePath));
         }
 
         return data;

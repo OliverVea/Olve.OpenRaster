@@ -12,32 +12,32 @@ public class Layer
     public required string Name { get; set; }
 
     /// <summary>
-    /// The source of the layer.
+    /// The source path or identifier of the layer's image data within the OpenRaster file.
     /// </summary>
     public required string Source { get; set; }
 
     /// <summary>
-    /// The width of the layer.
+    /// The compositing operation that determines how the layer blends with layers beneath it.
     /// </summary>
     public CompositeOperation CompositeOperation { get; set; } = CompositeOperation.SrcOver;
 
     /// <summary>
-    /// The opacity of the layer.
+    /// The opacity of the layer (0.0 = fully transparent, 1.0 = fully opaque).
     /// </summary>
     public float Opacity { get; set; } = 1.0f;
 
     /// <summary>
-    /// The visibility of the layer.
+    /// Whether the layer is visible.
     /// </summary>
     public bool Visible { get; set; } = true;
 
     /// <summary>
-    /// The X position of the layer.
+    /// The X position of the layer relative to the canvas.
     /// </summary>
     public int X { get; set; } = 0;
 
     /// <summary>
-    /// The Y position of the layer.
+    /// The Y position of the layer relative to the canvas.
     /// </summary>
     public int Y { get; set; } = 0;
 

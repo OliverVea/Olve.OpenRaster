@@ -6,7 +6,7 @@ namespace Olve.OpenRaster.Parsing;
 
 internal static class StackFileReader
 {
-    public static Result<StackFileContent> ReadStackXml(ZipArchive zipArchive)
+    public static Result<OpenRasterFile> ReadStackXml(ZipArchive zipArchive)
     {
         var stackFile = zipArchive.GetEntry("stack.xml");
         if (stackFile == null)
@@ -72,7 +72,7 @@ internal static class StackFileReader
             return problems;
         }
 
-        var stack = new StackFileContent
+        var stack = new OpenRasterFile
         {
             Version = version,
             Width = width,

@@ -6,46 +6,31 @@ using Olve.Utilities.Types.Results;
 namespace Olve.OpenRaster;
 
 /// <summary>
-/// Reads an open raster file.
+///     Reads and validates an OpenRaster (.ora) file, extracting necessary metadata.
 /// </summary>
-public class ReadOpenRasterFile : IOperation<ReadOpenRasterFile.Request, ReadOpenRasterFile.Response>
+public class ReadOpenRasterFile : IOperation<ReadOpenRasterFile.Request, OpenRasterFile>
 {
     /// <summary>
-    /// Represents the request to read an open raster file.
+    ///     Represents a request to read an OpenRaster file.
     /// </summary>
-    /// <param name="Path">The path to the open raster file.</param>
-    public record Request(string Path);
-
-    /// <summary>
-    /// Represents the response to reading an open raster file.
-    /// </summary>
-    /// <param name="MimeType">The mimetype of the open raster file.</param>
-    /// <param name="StackFile">The stack file read from the open raster file.</param>
-    public record Response(string MimeType, StackFileContent StackFile);
+    /// <param name="FilePath">The absolute or relative path to the OpenRaster (.ora) file.</param>
+    public record Request(string FilePath);
 
     /// <inheritdoc />
-    public Result<Response> Execute(Request request)
+    public Result<OpenRasterFile> Execute(Request request)
     {
-        var path = Path.GetFullPath(request.Path);
-        if (!File.Exists(path))
+        if (FilePathValidator.ValidateFilePath(request.FilePath).TryPickProblems(out var problems))
         {
-            return new ResultProblem("no file was found with path '{0}'", path);
+            return problems.Prepend(new ResultProblem("File path failed validation."));
         }
 
-        using var zipFolder = ZipFile.OpenRead(request.Path);
+        using var zipArchive = ZipFile.OpenRead(request.FilePath);
 
-        if (MimeTypeReader.ReadMimetype(zipFolder).TryPickProblems(out var problems, out var mimeType))
+        if (StackFileReader.ReadStackXml(zipArchive).TryPickProblems(out problems, out var openRasterFile))
         {
-            problems.Prepend(new ResultProblem("failed reading mimetype"));
-            return problems;
+            return problems.Prepend(new ResultProblem("Failed to read stack.xml from OpenRaster file."));
         }
 
-        if (StackFileReader.ReadStackXml(zipFolder).TryPickProblems(out problems, out var stack))
-        {
-            problems.Prepend(new ResultProblem("failed reading stack.xml"));
-            return problems;
-        }
-
-        return new Response(mimeType, stack);
+        return openRasterFile;
     }
 }

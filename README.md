@@ -22,11 +22,10 @@ This package only contains two operations:
 
 ```csharp
 using BigGustave;
+using Olve.OpenRaster;
 using Olve.Utilities.Types.Results;
 
-namespace Olve.OpenRaster.Test;
-
-public static class ReadLayerAsExample
+public static class ReadLayerAs_Example
 {
     public static void ReadLayerAsPng()
     {
@@ -38,7 +37,7 @@ public static class ReadLayerAsExample
         var result = readLayerAsPng.Execute(request);
         if (!result.TryPickValue(out var png, out var problems))
         {
-            problems.Prepend(new ResultProblem("could not read layer image"));
+            problems.Prepend(new ResultProblem("could not read layer image '{0}' in file '{1}'", request.LayerSource, request.Path));
             
             foreach (var problem in problems)
             {
