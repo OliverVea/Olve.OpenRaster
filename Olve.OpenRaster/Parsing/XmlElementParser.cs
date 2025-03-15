@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Xml.Linq;
 using Olve.Utilities.Types.Results;
 
@@ -49,7 +50,7 @@ internal static class XmlElementParser
             return problems;
         }
 
-        if (!int.TryParse(attributeString, out var attributeValue))
+        if (!int.TryParse(attributeString, CultureInfo.InvariantCulture, out var attributeValue))
         {
             return new ResultProblem("attribute '{0}' in element '{1}' with value '{2}' is not a valid integer", attributeName,  element.Name, attributeString);
         }
@@ -64,7 +65,7 @@ internal static class XmlElementParser
             return defaultValue;
         }
 
-        if (!int.TryParse(attributeString, out var attributeValue))
+        if (!int.TryParse(attributeString, CultureInfo.InvariantCulture, out var attributeValue))
         {
             return new ResultProblem("attribute '{0}' in element '{1}' with value '{2}' is not a valid integer", attributeName,  element.Name, attributeString);
         }
@@ -79,7 +80,7 @@ internal static class XmlElementParser
             return problems;
         }
 
-        if (!float.TryParse(attributeString, out var attributeValue))
+        if (!float.TryParse(attributeString, CultureInfo.InvariantCulture, out var attributeValue))
         {
             return new ResultProblem("attribute '{0}' in element '{1}' with value '{2}' is not a valid decimal number", attributeName,  element.Name, attributeString);
         }
@@ -94,7 +95,7 @@ internal static class XmlElementParser
             return defaultValue;
         }
 
-        if (!float.TryParse(attributeString, out var attributeValue))
+        if (!float.TryParse(attributeString, CultureInfo.InvariantCulture, out var attributeValue))
         {
             return new ResultProblem("attribute '{0}' in element '{1}' with value '{2}' is not a valid decimal number", attributeName,  element.Name, attributeString);
         }

@@ -43,5 +43,5 @@ public class Group
     /// <summary>
     /// The layers belonging to the group.
     /// </summary>
-    public List<Layer> Layers { get; set; } = [];
+    public IList<Layer> Layers { get; set; } = [];
 }

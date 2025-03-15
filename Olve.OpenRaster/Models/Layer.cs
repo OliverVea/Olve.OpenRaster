@@ -44,5 +44,5 @@ public class Layer
     /// <summary>
     /// The groups (stacks) that the layer belongs to.
     /// </summary>
-    public List<Group> Groups { get; set; } = [];
+    public IList<Group> Groups { get; set; } = [];
 }

@@ -22,15 +22,18 @@ public class ReadLayerAs<T> : IOperation<ReadLayerAs<T>.Request, T>
     /// <inheritdoc />
     public Result<T> Execute(Request request)
     {
-        if (FilePathValidator.ValidateFilePath(request.FilePath).TryPickProblems(out var problems))
+        if (FilePathValidator
+            .ValidateFilePath(request.FilePath)
+            .TryPickProblems(out var problems))
         {
             return problems.Prepend(new ResultProblem("File path '{0}' failed validation.", request.FilePath));
         }
 
         using var zipArchive = ZipFile.OpenRead(request.FilePath);
 
-        if (LayerImageReader.ReadImageFile(zipArchive, request.LayerSource, request.LayerParser)
-                .TryPickProblems(out problems, out var data))
+        if (LayerImageReader
+            .ReadImageFile(zipArchive, request.LayerSource, request.LayerParser)
+            .TryPickProblems(out problems, out var data))
         {
             return problems.Prepend(new ResultProblem(
                 "Could not read layer '{0}' from OpenRaster file '{1}'.",

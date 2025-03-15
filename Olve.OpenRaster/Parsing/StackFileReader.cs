@@ -8,6 +8,63 @@ internal static class StackFileReader
 {
     public static Result<OpenRasterFile> ReadStackXml(ZipArchive zipArchive)
     {
+        if (GetStackXmlRoot(zipArchive).TryPickProblems(out var problems, out var root))
+        {
+            return problems.Prepend(new ResultProblem("failed reading stack.xml from .ora file"));
+        }
+
+        if (root.GetAttribute("version", "0.0.0").TryPickProblems(out problems, out var version))
+        {
+            return problems.Prepend(new ResultProblem("failed reading version from stack.xml"));
+        }
+
+        if (root.GetIntAttribute("w").TryPickProblems(out problems, out var width))
+        {
+            return problems.Prepend(new ResultProblem("failed reading width from stack.xml"));
+        }
+
+        if (root.GetIntAttribute("h").TryPickProblems(out problems, out var height))
+        {
+            return problems.Prepend(new ResultProblem("failed reading height from stack.xml"));
+        }
+
+        if (root.GetIntAttribute("xres", 72).TryPickProblems(out problems, out var xRes))
+        {
+            return problems.Prepend(new ResultProblem("failed reading xres from stack.xml"));
+        }
+
+        if (root.GetIntAttribute("yres", 72).TryPickProblems(out problems, out var yRes))
+        {
+            return problems.Prepend(new ResultProblem("failed reading yres from stack.xml"));
+        }
+
+        var rootStack = root.Element("stack");
+        if (rootStack == null)
+        {
+            return new ResultProblem("root stack element is missing in stack.xml");
+        }
+
+        if (ParseChildren(rootStack.Elements()).TryPickProblems(out problems, out var children))
+        {
+            return problems;
+        }
+
+        var stack = new OpenRasterFile
+        {
+            Version = version,
+            Width = width,
+            Height = height,
+            XResolution = xRes,
+            YResolution = yRes,
+            Groups = children.Groups,
+            Layers = children.Layers,
+        };
+
+        return stack;
+    }
+
+    private static Result<XElement> GetStackXmlRoot(ZipArchive zipArchive)
+    {
         var stackFile = zipArchive.GetEntry("stack.xml");
         if (stackFile == null)
         {
@@ -25,64 +82,20 @@ internal static class StackFileReader
             return new ResultProblem("stack.xml is empty");
         }
 
-        if (root.GetAttribute("version", "0.0.0").TryPickProblems(out var problems, out var version))
-        {
-            problems.Prepend(new ResultProblem("failed reading version from stack.xml"));
-            return problems;
-        }
+        return root;
+    }
 
-        if (root.GetIntAttribute("w").TryPickProblems(out problems, out var width))
-        {
-            problems.Prepend(new ResultProblem("failed reading width from stack.xml"));
-            return problems;
-        }
-
-        if (root.GetIntAttribute("h").TryPickProblems(out problems, out var height))
-        {
-            problems.Prepend(new ResultProblem("failed reading height from stack.xml"));
-            return problems;
-        }
-
-        if (root.GetIntAttribute("xres", 72).TryPickProblems(out problems, out var xRes))
-        {
-            problems.Prepend(new ResultProblem("failed reading xres from stack.xml"));
-            return problems;
-        }
-
-        if (root.GetIntAttribute("yres", 72).TryPickProblems(out problems, out var yRes))
-        {
-            problems.Prepend(new ResultProblem("failed reading yres from stack.xml"));
-            return problems;
-        }
-
-        var rootStack = root.Element("stack");
-        if (rootStack == null)
-        {
-            return new ResultProblem("root stack element is missing in stack.xml");
-        }
-
+    private static Result<(List<Group> Groups, List<Layer> Layers)> ParseChildren(IEnumerable<XElement> children)
+    {
         List<Group> groups = [];
         List<Layer> layers = [];
 
-        var children = rootStack.Elements();
         var parseChildrenResult = StackElementParser.ParseStackElements(children, layers, groups);
-        if (parseChildrenResult.TryPickProblems(out problems))
+        if (parseChildrenResult.TryPickProblems(out var problems))
         {
-            problems.Prepend(new ResultProblem("failed parsing stack in stack.xml"));
-            return problems;
+            return problems.Prepend(new ResultProblem("failed parsing stack in stack.xml"));
         }
 
-        var stack = new OpenRasterFile
-        {
-            Version = version,
-            Width = width,
-            Height = height,
-            XResolution = xRes,
-            YResolution = yRes,
-            Groups = groups,
-            Layers = layers
-        };
-
-        return stack;
+        return (groups, layers);
     }
 }
