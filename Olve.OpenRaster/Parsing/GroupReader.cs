@@ -1,5 +1,6 @@
 using System.Xml.Linq;
 using Olve.Utilities.Types.Results;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace Olve.OpenRaster.Parsing;
 
@@ -38,24 +39,24 @@ internal static class GroupReader
             return problems.Prepend(new ResultProblem("could not get attribute 'x' from element '{0}'", element.Name));
         }
 
-        Group group = new()
-        {
-            Name = name,
-            CompositeOperation = compositeOperation,
-            Opacity = opacity,
-            Visibility = visibility,
-#pragma warning disable CS0618 // Type or member is obsolete
-            X = x,
-            Y = y,
-#pragma warning restore CS0618 // Type or member is obsolete
-            Layers = layers[layers.Count..],
-        };
+        var layerIndex = layers.Count;
 
         var childElementResults = StackElementParser.ParseStackElements(element.Elements(), layers, groups);
         if (childElementResults.TryPickProblems(out problems))
         {
             return problems.Prepend(new ResultProblem("could not parse child element(s) of '{0}'", element.Name));
         }
+
+        Group group = new()
+        {
+            Name = name,
+            CompositeOperation = compositeOperation,
+            Opacity = opacity,
+            Visibility = visibility,
+            X = x,
+            Y = y,
+            Layers = layers[layerIndex..],
+        };
 
         foreach (var layer in group.Layers)
         {
