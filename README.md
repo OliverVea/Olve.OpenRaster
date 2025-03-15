@@ -16,9 +16,43 @@ dotnet add package Olve.OpenRaster
 
 This package only contains two operations:
 
-- **ReadOpenRasterFile** opens a `.ora` file, reads the metadata from `mimetype` and `stack.xml` files and returns the data in an easily-consumable class structure.
+### ReadOpenRasterFile
 
-- [**`ReadLayerAs<T>`**](Olve.OpenRaster/ILayerParser.cs) takes a layer source string and parses the layer image into the output type `T` with a provided `ILayerParser<T>`. 
+[**`ReadOpenRasterFile`**](Olve.OpenRaster/ReadOpenRasterFile.cs) reads an `.ora` file and returns the metadata and layer data as an easily-consumable class hierarchy.
+
+```csharp
+using Olve.Utilities.Types.Results;
+
+namespace Olve.OpenRaster.Test;
+
+public static class ReadOpenRasterFile_Example
+{
+    public static void ReadOpenRasterFile()
+    {
+        ReadOpenRasterFile operation = new();
+        ReadOpenRasterFile.Request request = new("map_1.ora");
+
+        var result = operation.Execute(request);
+        if (!result.TryPickValue(out var openRasterFile, out var problems))
+        {
+            problems.Prepend(new ResultProblem("could not read OpenRaster file '{0}'", request.FilePath));
+
+            foreach (var problem in problems)
+            {
+                Console.WriteLine(problem.ToDebugString());
+            }
+
+            return;
+        }
+
+        Console.WriteLine($"Successfully read OpenRaster file '{request.FilePath}' with {openRasterFile.Layers.Count} layers and {openRasterFile.Groups.Count} groups");
+    }
+}
+```
+
+### ReadLayerAs
+
+[**`ReadLayerAs<T>`**](Olve.OpenRaster/ILayerParser.cs) takes a layer source string and parses the layer image into the output type `T` with a provided `ILayerParser<T>`.
 
 ```csharp
 using BigGustave;
@@ -54,7 +88,9 @@ public static class ReadLayerAs_Example
 ```
 
 > [!TIP]
-> The `ReadLayerAs<T>` operation is a generic operation that can be used to read any layer type, as long as you provide an implementation of `ILayerParser<T>`. For example, an `ILayerParser<Mesh>` could be used to convert a heightmap layer into a 3D mesh, isolating the logic for this conversion from the rest of your code.
+> The `ReadLayerAs<T>` operation is a generic operation that can be used to read any layer type, as long as you provide an implementation of `ILayerParser<T>`.
+>
+> For example, an `ILayerParser<Mesh>` could be used to convert a heightmap layer into a 3D mesh, isolating the logic for this conversion from the rest of your code.
 
 Currently, no default implementations of `ILayerParser` have been added to the library, you will have to convert the byte stream to an image file yourself, but the `.ora` structure is handily abstracted away, so you will most likely only need to parse a `.png` file yourself.
 
