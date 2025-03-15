@@ -18,7 +18,7 @@ This package only contains two operations:
 
 ### ReadOpenRasterFile
 
-[**`ReadOpenRasterFile`**](Olve.OpenRaster/ReadOpenRasterFile.cs) reads an `.ora` file and returns the metadata and layer data as an easily-consumable class hierarchy.
+[**`ReadOpenRasterFile`**](Olve.OpenRaster/Operations/ReadOpenRasterFile.cs) reads an `.ora` file and returns the metadata and layer data as an easily-consumable class hierarchy.
 
 ```csharp
 using Olve.Utilities.Types.Results;
@@ -52,7 +52,7 @@ public static class ReadOpenRasterFile_Example
 
 ### ReadLayerAs
 
-[**`ReadLayerAs<T>`**](Olve.OpenRaster/ILayerParser.cs) takes a layer source string and parses the layer image into the output type `T` with a provided `ILayerParser<T>`.
+[**`ReadLayerAs<T>`**](Olve.OpenRaster/Operations/ReadLayerAs.cs) takes a layer source string and parses the layer image into the output type `T` with a provided [`ILayerParser<T>`](Olve.OpenRaster/ILayerParser.cs).
 
 ```csharp
 using BigGustave;
@@ -71,7 +71,7 @@ public static class ReadLayerAs_Example
         var result = readLayerAsPng.Execute(request);
         if (!result.TryPickValue(out var png, out var problems))
         {
-            problems.Prepend(new ResultProblem("could not read layer image '{0}' in file '{1}'", request.LayerSource, request.Path));
+            problems.Prepend(new ResultProblem("could not read layer image '{0}' in file '{1}'", request.LayerSource, request.FilePath));
             
             foreach (var problem in problems)
             {
@@ -96,10 +96,6 @@ Currently, no default implementations of `ILayerParser` have been added to the l
 
 The [`BigGustave`](https://github.com/EliotJones/BigGustave) library is a good candidate for this, as it is a simple and lightweight PNG decoder. Here is an example of how you could implement this:
 
-```bash
-dotnet add package BigGustave
-```
-
 ```csharp
 using BigGustave;
 using Olve.Utilities.Types.Results;
@@ -113,6 +109,12 @@ public class PngLayerParser : ILayerParser<Png>
         return Png.Open(stream);
     }
 }
+```
+
+And don't forget to add the `BigGustave` package to your project:
+
+```bash
+dotnet add package BigGustave
 ```
 
 ## Future
