@@ -1,3 +1,13 @@
+## v0.1.4 (2025-03-15)
+
+### Fix
+
+- fixing missing group-layer mapping
+
+### Refactor
+
+- following `Meziantou.Analyzer` best practices
+
 ## v0.1.3 (2025-03-15)
 
 ### Refactor
