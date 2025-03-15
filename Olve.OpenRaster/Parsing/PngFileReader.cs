@@ -3,9 +3,9 @@ using Olve.Utilities.Types.Results;
 
 namespace Olve.OpenRaster.Parsing;
 
-internal static class ImageFileReader
+internal static class LayerImageReader
 {
-    public static Result<TImage> ReadImageFile<TImage>(ZipArchive zipArchive, string imageSource, IImageFileReader<TImage> imageFileReader)
+    public static Result<TImage> ReadImageFile<TImage>(ZipArchive zipArchive, string imageSource, ILayerParser<TImage> layerParser)
     {
         var file = zipArchive.GetEntry(imageSource);
         if (file == null)
@@ -15,7 +15,7 @@ internal static class ImageFileReader
 
         using var stream = file.Open();
 
-        if (imageFileReader.ReadImage(stream).TryPickProblems(out var problems, out var image))
+        if (layerParser.ParseLayer(stream).TryPickProblems(out var problems, out var image))
         {
             problems.Prepend(new ResultProblem("could not read image file '{0}'", imageSource));
             return problems;
