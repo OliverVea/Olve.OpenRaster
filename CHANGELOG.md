@@ -1,3 +1,9 @@
+## v0.1.3 (2025-03-15)
+
+### Refactor
+
+- refactored public-facing members and documentation to improve clarity
+
 ## v0.1.2 (2025-03-15)
 
 ### Fix
