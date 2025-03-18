@@ -1,6 +1,6 @@
 using BigGustave;
 using Olve.OpenRaster;
-using Olve.Utilities.Types.Results;
+using Olve.Results;
 using Olve.OpenRaster.Test;
 
 public static class ReadLayerAs_Example

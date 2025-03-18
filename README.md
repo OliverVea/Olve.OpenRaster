@@ -21,7 +21,7 @@ This package only contains two operations:
 [**`ReadOpenRasterFile`**](Olve.OpenRaster/Operations/ReadOpenRasterFile.cs) reads an `.ora` file and returns the metadata and layer data as an easily-consumable class hierarchy.
 
 ```csharp
-using Olve.Utilities.Types.Results;
+using Olve.Results;
 
 namespace Olve.OpenRaster.Test;
 
@@ -57,7 +57,7 @@ public static class ReadOpenRasterFile_Example
 ```csharp
 using BigGustave;
 using Olve.OpenRaster;
-using Olve.Utilities.Types.Results;
+using Olve.Results;
 
 public static class ReadLayerAs_Example
 {
@@ -98,7 +98,7 @@ The [`BigGustave`](https://github.com/EliotJones/BigGustave) library is a good c
 
 ```csharp
 using BigGustave;
-using Olve.Utilities.Types.Results;
+using Olve.Results;
 
 namespace Olve.OpenRaster.Test;
 

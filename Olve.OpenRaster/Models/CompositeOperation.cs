@@ -1,4 +1,4 @@
-﻿using Olve.Utilities.Types.Results;
+﻿using Olve.Results;
 
 namespace Olve.OpenRaster;
 

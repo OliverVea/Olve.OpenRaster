@@ -1,5 +1,5 @@
 using System.Xml.Linq;
-using Olve.Utilities.Types.Results;
+using Olve.Results;
 #pragma warning disable CS0618 // Type or member is obsolete
 
 namespace Olve.OpenRaster.Parsing;

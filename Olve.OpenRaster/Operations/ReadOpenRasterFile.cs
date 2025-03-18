@@ -1,7 +1,7 @@
 using System.IO.Compression;
 using Olve.OpenRaster.Parsing;
-using Olve.Utilities.Operations;
-using Olve.Utilities.Types.Results;
+using Olve.Operations;
+using Olve.Results;
 
 namespace Olve.OpenRaster;
 
