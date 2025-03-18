@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Olve.OpenRaster?logo=nuget)](https://www.nuget.org/packages/Olve.OpenRaster)[![GitHub](https://img.shields.io/github/license/OliverVea/Olve.OpenRaster)](LICENSE)![LOC](https://img.shields.io/endpoint?url=https%3A%2F%2Fghloc.vercel.app%2Fapi%2FOliverVea%2FOlve.OpenRaster%2Fbadge)![NuGet Downloads](https://img.shields.io/nuget/dt/Olve.OpenRaster)
 
-The purpose of this library is to provide simple read-only access to `.ora`, or [OpenRaster](https://www.openraster.org/), files, with a simple native C# library with minimal dependencies, in fact, `Olve.Utilities` and `OneOf` are the only dependencies of this project.
+The purpose of this library is to provide simple read-only access to `.ora`, or [OpenRaster](https://www.openraster.org/), files, with a simple native C# library with minimal dependencies, in fact, [`Olve.Results`](https://github.com/OliverVea/Olve.Utilities/tree/master/src/Olve.Results), [`Olve.Operations`](https://github.com/OliverVea/Olve.Utilities/tree/master/src/Olve.Operations), and, transiently, `Microsoft.Extensions.DependencyInjection.Abstractions` are the only dependencies of this project.
 
 ## Installation
 
